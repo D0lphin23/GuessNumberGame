@@ -1,46 +1,76 @@
 "use strict";
 
-const number = 15;
+function newGame() {
+    const number = Math.floor(Math.random() * 100) + 1;
+    const attempts = 10;
 
-const isNumber = function (num) {
-    return (
-        !isNaN(parseInt(num)) && isFinite(num) && num.includes(" ") === false
-    );
-};
+    console.log(number);
 
-const guessesNumber = function (number) {
-    function questionFunc() {
-        const answerNumber = prompt("Угадай число от 1 до 100");
+    const isNumber = function (num) {
+        return (
+            !isNaN(parseInt(num)) &&
+            isFinite(num) &&
+            num.includes(" ") === false
+        );
+    };
 
-        if (answerNumber === null) {
-            alert("Игра окончена!");
-            return;
-        }
+    const guessesNumber = function (number, attempts) {
+        function questionFunc() {
+            const answerNumber = prompt("Угадай число от 1 до 100");
 
-        let answer = isNumber(answerNumber)
-            ? Number(answerNumber)
-            : answerNumber;
-
-        if (typeof answer === "string") {
-            alert("Введи число!");
-            questionFunc();
-        } else if (answer === number) {
-            alert("Поздравляю, Вы угадали!!!");
-        } else if (answer > number) {
-            if (!confirm("Загаданное число меньше.")) {
+            if (answerNumber === null) {
                 alert("Игра окончена!");
                 return;
             }
-            questionFunc();
-        } else if (answer < number) {
-            if (!confirm("Загаданное число больше.")) {
-                alert("Игра окончена!");
-                return;
-            }
-            questionFunc();
-        }
-    }
-    questionFunc();
-};
 
-guessesNumber(number);
+            let answer = isNumber(answerNumber)
+                ? Number(answerNumber)
+                : answerNumber;
+
+            if (typeof answer === "string") {
+                alert("Введи число!");
+
+                questionFunc();
+            }
+
+            let newAttempts = --attempts;
+
+            if (answer === number) {
+                if (
+                    !confirm("Поздравляю, Вы угадали!!! Хотели бы сыграть еще?")
+                ) {
+                    return;
+                }
+
+                newGame();
+            }
+
+            if (newAttempts <= 0) {
+                if (!confirm("Попытки закончились, хотите сыграть еще?")) {
+                    return;
+                }
+
+                newGame();
+            }
+
+            if (answer > number) {
+                confirm(
+                    `Загаданное число меньше, осталось попыток ${newAttempts}`,
+                );
+
+                questionFunc();
+            } else if (answer < number) {
+                confirm(
+                    `Загаданное число больше, осталось попыток ${newAttempts}`,
+                );
+
+                questionFunc();
+            }
+        }
+        questionFunc();
+    };
+
+    guessesNumber(number, attempts);
+}
+
+newGame();

@@ -1,6 +1,6 @@
 "use strict";
 
-const number = 15;
+const number = Math.floor(Math.random() * 100) + 1;
 
 const isNumber = function (num) {
     return (
@@ -27,16 +27,11 @@ const guessesNumber = function (number) {
         } else if (answer === number) {
             alert("Поздравляю, Вы угадали!!!");
         } else if (answer > number) {
-            if (!confirm("Загаданное число меньше.")) {
-                alert("Игра окончена!");
-                return;
-            }
+            confirm("Загаданное число меньше.");
+
             questionFunc();
         } else if (answer < number) {
-            if (!confirm("Загаданное число больше.")) {
-                alert("Игра окончена!");
-                return;
-            }
+            confirm("Загаданное число больше.");
             questionFunc();
         }
     }
